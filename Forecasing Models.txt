@@ -1,0 +1,151 @@
+FORECASTING MODELS :AR, MA, ARIMA MODELS
+
+time series analysis
+
+1. time series analysis vs regression
+
+  TIME DEPENDENT
+
+TREND ,SEASONALITY
+
+2. COMPONENTS OF A TIME SERIES: TREND ,SEASONALITY
+
+3. STATIONARITY[WHAT , WHY, HOW]
+
+STATIONARY TIME SERIES [statistical prop. are constant over time]
+
+
+WE HAVE TO STATIONARIZE IT FIRST?
+
+
+TRANSFORMATIONS:
+[DIFFERENCING, LOG TRANSFORMATIONS, EXPONENTIAL DIFFERENCE]
+
+
+TEST STATISTICALLY FOR STATIONARITY
+
+1.ADF TEST
+
+2.Visualize:  w.r.t rolling std , rolling mean
+
+================================================================
+models for forecating time series:
+
+AR, MA, ARMA, ARIMA, SARIMA         [p,q,d]
+
+from statsmodels.tsa.ar_model import AR
+
+AR: Auto Regression.
+AR (p):lags of dependent variable   p=2: x(t-1), x(t-2)
+p:auto regressive parameter of the model.
+AR model we model the next step as a sequence of prior time steps.
+
+MA: Moving Averages.
+MA (q):lagged forecast errors in prediction equation
+        q=2  : e(t-1), e(t-2)
+
+ARMA:
+ARMA (p,q)
+
+ARIMA [SEASONALITY,TREND,NOISE]
+
+[p,q,d]
+
+d:amt. of differencing u apply to the time series
+
+d= df.count-df.count.shift(1)
+
+u can check the acf n pacf graphs for calculating the value of d
+
+sarima:  trend ELEMENTS             seasonality ELEMENTS
+	 p,q,d                      P,D,Q,m
+				    m=number of time steps
+==================================================================
+
+model= SARIMAX(train, order=(p,q,d),seasonal_order=(P,Q,D,m)
+
+
+
+
+
+
+
+
+ADF
+
+series is stationarized=======apply the models.
+
+from statsmodels.tsa.ststtools import adfuller
+
+H0: TIME SERIES IS NOT STATIONARY
+H1: TIME SERIES IS  STATIONARY
+
+dftest=adfuller(y.passenger,autolag='AIC')
+output=pd.Series(dftest[0:4], index='test statistics','p-value','lags used', number of observation)
+
+for k,value in dftest[4].items():
+output['critical'% k]=value
+
+print(output)
+
+
+
+
+
+
+
+
+our time series is not stationary
+we have to apply transformations
+
+Transformation Methods:
+1.log transform and then differencing(shifting)
+
+ts_log=np.log(y)
+ 
+ts_log_diff=ts_log.passenger- ts_log.passenger.shift()
+
+conduct the adf test again to check the stationarity
+
+
+(i)  fn stationarity=======test_stationarity
+
+test_stationary(ts_log_diff)
+
+adf+ rolling mean, std  + plot
+
+rolling(12).mean()  rolling means moving and 12 means over a period of 12 months.
+rolling(12).std()
+mean, std    [ window frame]
+
+(ii)  ARIMA
+[p,q]                d=1
+
+
+===========Error to depict the model parameters is minimization of error
+
+==========pacf, acf================autocorrelation plots
+
+p,q  [2,2]
+from statsmodels.tsa.stattools import acf,pacf
+l_acf= acf(t, nlags=15)
+l_pacf=pacf(t, nlags=15)
+
+plt.plot(l_acf)
+plt.plot(l_pacf)
+====================================================================order=(2,1,0)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
